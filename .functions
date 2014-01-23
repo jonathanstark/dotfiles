@@ -312,3 +312,28 @@ function np() {
 function tre() {
     tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX
 }
+
+function mamp() {
+  #
+  # Default location of the apache conf file for MAMP
+  CONF_FILE="/Applications/MAMP/conf/apache/httpd.conf"
+  #
+  # Fish existing doc root out of conf file
+  LINE=$(cat $CONF_FILE | grep ^DocumentRoot)
+  QUOTED_STRING=${LINE/DocumentRoot /}
+  OLD_DOC_ROOT=${QUOTED_STRING//\"/}
+  #
+  # Set new doc root to current directory
+  NEW_DOC_ROOT=$(pwd)
+  #
+  # Replace docroot strings in conf file
+  sed -i.bak -e "s|${OLD_DOC_ROOT}|${NEW_DOC_ROOT}|g" $CONF_FILE
+  #
+  # Restart server
+  sudo /Applications/MAMP/Library/bin/apachectl -k restart && sleep 2 && open "http://localhost/"
+}
+
+function mampstop() {
+  sudo /Applications/MAMP/bin/stopApache.sh
+  echo "mamp stopped"
+}
