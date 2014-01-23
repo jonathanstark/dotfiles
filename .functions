@@ -326,7 +326,7 @@ function mamp() {
   # Set new doc root to current directory
   NEW_DOC_ROOT=$(pwd)
   #
-  # Replace docroot strings in conf file
+  # Replace doc root strings in conf file
   sed -i.bak -e "s|${OLD_DOC_ROOT}|${NEW_DOC_ROOT}|g" $CONF_FILE
   #
   # Restart server
